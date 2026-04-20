@@ -1,5 +1,3 @@
-
-100%
 <x-layouts.app title="Data Dokter">
 
     {{-- Header --}}

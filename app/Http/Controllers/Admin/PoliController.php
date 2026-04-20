@@ -23,14 +23,11 @@ class PoliController extends Controller
     {
         $validated = $request->validate([
             'nama_poli' => 'required',
-            'keterangan' => 'nullable'
+            'keterangan' => 'nullable',
         ]);
 
         Poli::create($validated);
-        
-        return redirect()->route('polis.index')
-            ->with('success', 'Poli berhasil ditambahkan')
-            ->with('type', 'success');
+        return redirect()->route('polis.index')->with('success', 'Poli berhasil di tambahkan')->with('type', 'success');
     }
 
     public function edit($id)
@@ -43,22 +40,18 @@ class PoliController extends Controller
     {
         $validated = $request->validate([
             'nama_poli' => 'required',
-            'keterangan' => 'nullable'
+            'keterangan' => 'nullable',
         ]);
 
         $poli = Poli::findOrFail($id);
         $poli->update($validated);
-        
-        return redirect()->route('polis.index')
-            ->with('success', 'Poli berhasil diupdate');
+        return redirect()->route('polis.index')->with('success', 'Poli berhasil di update');
     }
 
     public function destroy($id)
     {
         $poli = Poli::findOrFail($id);
-        $poli->delete();
-        
-        return redirect()->route('polis.index')
-            ->with('success', 'Poli berhasil dihapus!');
+        $poli->delete($poli);
+        return redirect()->route('polis.index')->with('success', 'Poli Berhasil di hapus !');
     }
 }

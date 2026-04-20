@@ -18,4 +18,12 @@ export default {
         },
     },
     plugins: [daisyui],
+    
+    // TAMBAHKAN SETTING DAISYUI DI SINI
+    daisyui: {
+        themes: ["light"], // Memaksa tema light agar tidak bentrok dengan auto dark mode
+        base: true,        // Tetap gunakan base styles
+        utils: true,       // Tetap gunakan utility classes
+        logs: false,       // Opsional: mematikan log daisyui di terminal
+    },
 };
