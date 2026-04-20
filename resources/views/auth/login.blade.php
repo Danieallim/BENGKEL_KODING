@@ -1,4 +1,4 @@
-<x-layout.guest title="Login">
+<x-layouts.guest title="Login">
     {{-- Card Utama - Dipaksa Putih Solid --}}
     <div class="card shadow-2xl rounded-2xl w-full max-w-[420px]" style="background-color: white !important; color: #1e2d6b;">
         <div class="card-body p-[40px]">
@@ -75,4 +75,4 @@
         }
     </script>
     @endpush
-</x-layout.guest>
+</x-layouts.guest>
