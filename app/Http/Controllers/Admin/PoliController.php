@@ -22,12 +22,15 @@ class PoliController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_poli' => 'required',
-            'keterangan' => 'nullable',
+            'nama_poli' => 'required|string|max:25',
+            'keterangan' => 'nullable|string',
         ]);
 
         Poli::create($validated);
-        return redirect()->route('polis.index')->with('success', 'Poli berhasil di tambahkan')->with('type', 'success');
+
+        return redirect()->route('polis.index')
+            ->with('message', 'Poli berhasil ditambahkan')
+            ->with('type', 'success');
     }
 
     public function edit($id)
@@ -39,19 +42,31 @@ class PoliController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'nama_poli' => 'required',
-            'keterangan' => 'nullable',
+            'nama_poli' => 'required|string|max:25',
+            'keterangan' => 'nullable|string',
         ]);
 
         $poli = Poli::findOrFail($id);
         $poli->update($validated);
-        return redirect()->route('polis.index')->with('success', 'Poli berhasil di update');
+
+        return redirect()->route('polis.index')
+            ->with('message', 'Poli berhasil diupdate')
+            ->with('type', 'success');
     }
 
     public function destroy($id)
     {
         $poli = Poli::findOrFail($id);
-        $poli->delete($poli);
-        return redirect()->route('polis.index')->with('success', 'Poli Berhasil di hapus !');
+
+        if ($poli->dokters()->exists()) {
+            return redirect()->route('polis.index')
+                ->with('error', 'Poli tidak bisa dihapus karena masih dipakai dokter.');
+        }
+
+        $poli->delete();
+
+        return redirect()->route('polis.index')
+            ->with('message', 'Poli berhasil dihapus')
+            ->with('type', 'success');
     }
 }

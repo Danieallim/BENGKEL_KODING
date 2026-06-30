@@ -75,6 +75,42 @@
                     @enderror
                 </div>
 
+                {{-- Manajemen Stok --}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">
+                            Stok Saat Ini
+                        </label>
+                        <input type="number" value="{{ $obat->stok }}" class="w-full px-4 py-2 border-2 rounded-lg p-2 bg-slate-100" readonly>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">
+                            Tambah Stok
+                        </label>
+                        <input type="number" name="tambah_stok" value="{{ old('tambah_stok', 0) }}" placeholder="0" min="0" step="1"
+                            class="w-full px-4 py-2 border-2 rounded-lg p-2
+                                      focus:border-indigo-600 focus:outline-none
+                                      @error('tambah_stok') border-red-500 @enderror">
+                        @error('tambah_stok')
+                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">
+                            Kurangi Stok
+                        </label>
+                        <input type="number" name="kurangi_stok" value="{{ old('kurangi_stok', 0) }}" placeholder="0" min="0" step="1"
+                            class="w-full px-4 py-2 border-2 rounded-lg p-2
+                                      focus:border-indigo-600 focus:outline-none
+                                      @error('kurangi_stok') border-red-500 @enderror">
+                        @error('kurangi_stok')
+                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
                 {{-- Buttons --}}
                 <div class="flex gap-3">
                     <button type="submit"

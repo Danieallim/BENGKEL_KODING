@@ -25,12 +25,14 @@ class ObatController extends Controller // Nama class harus ObatController
             'nama_obat' => 'required|string|max:255',
             'kemasan' => 'nullable|string|max:255',
             'harga' => 'required|numeric|min:0',
+            'stok' => 'required|integer|min:0',
         ]);
 
         Obat::create([
             'nama_obat' => $request->nama_obat,
             'kemasan' => $request->kemasan,
             'harga' => $request->harga,
+            'stok' => $request->stok,
         ]);
 
         return redirect()->route('obat.index')
@@ -49,17 +51,29 @@ class ObatController extends Controller // Nama class harus ObatController
             'nama_obat' => 'required|string|max:255',
             'kemasan' => 'nullable|string|max:255',
             'harga' => 'required|numeric|min:0',
+            'tambah_stok' => 'nullable|integer|min:0',
+            'kurangi_stok' => 'nullable|integer|min:0',
         ]);
+
+        $tambahStok = (int) ($request->tambah_stok ?? 0);
+        $kurangiStok = (int) ($request->kurangi_stok ?? 0);
+        $stokBaru = ((int) $obat->stok) + $tambahStok - $kurangiStok;
+
+        if ($stokBaru < 0) {
+            return back()
+                ->withInput()
+                ->with('error', 'Pengurangan stok melebihi stok yang tersedia.');
+        }
 
         $obat->update([
             'nama_obat' => $request->nama_obat,
             'kemasan' => $request->kemasan,
             'harga' => $request->harga,
+            'stok' => $stokBaru,
         ]);
 
         return redirect()->route('obat.index')
-            ->with('message', 'Data Obat Berhasil di Update')
-            ->with('type', 'success');
+            ->with('success', 'Data obat berhasil diupdate.');
     }
 
     public function destroy(Obat $obat)

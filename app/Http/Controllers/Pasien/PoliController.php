@@ -29,7 +29,7 @@ class PoliController extends Controller
         $request->validate([
             'id_poli' => 'required|exists:poli,id',
             'id_jadwal' => 'required|exists:jadwal_periksa,id',
-            'keluhan' => 'nullable|string',
+            'keluhan' => 'required|string',
             'id_pasien' => 'required|exists:users,id',
         ]);
 
@@ -37,7 +37,7 @@ class PoliController extends Controller
         $daftar = DaftarPoli::create([
             'id_pasien' => $request->id_pasien,
             'id_jadwal' => $request->id_jadwal,
-            'keluhan' => $request->keluhan,
+            'keluhan' => $request->filled('keluhan') ? $request->keluhan : null,
             'no_antrian' => $jumlahSudahDaftar + 1,
         ]);
 

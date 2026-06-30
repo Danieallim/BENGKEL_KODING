@@ -85,7 +85,7 @@
                             <label class="font-semibold block mb-1">
                                 Keluhan
                             </label>
-                            <textarea name="keluhan" rows="3" class="w-full border-2 rounded-lg p-2"
+                            <textarea name="keluhan" id="keluhan" rows="3" class="w-full border-2 rounded-lg p-2"
                                 placeholder="Tulis keluhan anda..."></textarea>
                         </div>
 
