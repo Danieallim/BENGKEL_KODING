@@ -30,11 +30,16 @@
                         @foreach ($obats as $obat)
                             <option value="{{ $obat->id }}"
                                 data-nama="{{ $obat->nama_obat }}"
-                                data-harga="{{ $obat->harga }}">
-                                {{ $obat->nama_obat }} - Rp{{ number_format($obat->harga) }}
+                                data-harga="{{ $obat->harga }}"
+                                data-stok="{{ $obat->stok }}"
+                                {{ $obat->stok <= 0 ? 'disabled' : '' }}>
+                                {{ $obat->nama_obat }} - Rp{{ number_format($obat->harga) }} (Stok: {{ $obat->stok }}){{ $obat->stok <= 0 ? ' - HABIS' : ($obat->stok <= 5 ? ' - MENIPIS' : '') }}
                             </option>
                         @endforeach
                     </select>
+                    <label class="label pt-1">
+                        <span class="text-xs text-slate-500">Obat dengan stok 0 tidak bisa dipilih. Stok ≤ 5 ditandai menipis.</span>
+                    </label>
                 </div>
 
                 {{-- Obat Terpilih --}}
@@ -52,10 +57,22 @@
                 {{-- Total Harga --}}
                 <div class="form-control mb-5">
                     <label class="label pb-1">
-                        <span class="text-sm font-semibold text-gray-700">Total Harga</span>
+                        <span class="text-sm font-semibold text-gray-700">Rincian Biaya</span>
                     </label>
-                    <div class="input input-bordered w-full rounded-lg flex items-center bg-slate-50 text-slate-700 font-bold" id="total-harga">
-                        Rp 0
+
+                    <div class="rounded-lg border-2 bg-slate-50 px-4 py-3 space-y-2 text-sm">
+                        <div class="flex items-center justify-between text-slate-600">
+                            <span>Total Obat</span>
+                            <span id="total-obat" class="font-semibold">Rp 0</span>
+                        </div>
+                        <div class="flex items-center justify-between text-slate-600">
+                            <span>Biaya Pemeriksaan</span>
+                            <span class="font-semibold">Rp 150.000</span>
+                        </div>
+                        <div class="border-t pt-2 flex items-center justify-between text-slate-800">
+                            <span class="font-bold">Total Akhir</span>
+                            <span id="total-harga" class="font-bold">Rp 150.000</span>
+                        </div>
                     </div>
                 </div>
 
@@ -92,6 +109,8 @@
         const inputBiaya = document.getElementById('biaya_periksa');
         const inputObatJson = document.getElementById('obat_json');
         const totalHargaEl = document.getElementById('total-harga');
+        const totalObatEl = document.getElementById('total-obat');
+        const biayaJasaPeriksa = 150000;
 
         let daftarObat = [];
 
@@ -100,8 +119,13 @@
             const id = selectedOption.value;
             const nama = selectedOption.dataset.nama;
             const harga = parseInt(selectedOption.dataset.harga || 0);
+            const stok = parseInt(selectedOption.dataset.stok || 0);
 
             if (!id || daftarObat.some(o => o.id == id)) return;
+            if (stok <= 0) {
+                alert('Stok obat habis, silakan pilih obat lain.');
+                return;
+            }
 
             daftarObat.push({ id, nama, harga });
             renderObat();
@@ -129,7 +153,8 @@
             });
 
             inputBiaya.value = total;
-            totalHargaEl.textContent = `Rp ${total.toLocaleString()}`;
+            totalObatEl.textContent = `Rp ${total.toLocaleString()}`;
+            totalHargaEl.textContent = `Rp ${(total + biayaJasaPeriksa).toLocaleString()}`;
             inputObatJson.value = JSON.stringify(daftarObat.map(o => o.id));
         }
 

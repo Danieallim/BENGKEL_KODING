@@ -1,5 +1,12 @@
 <x-layouts.app title="Detail Riwayat Pasien">
 
+    @php
+        $subtotalObat = $periksa->detailPeriksas->sum(function ($detail) {
+            return $detail->obat->harga ?? 0;
+        });
+        $biayaPemeriksaan = $periksa->biaya_periksa - $subtotalObat;
+    @endphp
+
     {{-- Header --}}
     <div class="flex items-center gap-3 mb-6">
         <a href="{{ route('riwayat-pasien.index') }}" class="inline-flex items-center justify-center w-9 h-9 
@@ -102,11 +109,27 @@
 
         {{-- Total Biaya --}}
         <div class="card bg-base-100 shadow-sm rounded-2xl border border-slate-200">
-            <div class="card-body px-6 py-5 flex items-center justify-between">
-                <span class="font-bold text-slate-700">Total Biaya Periksa</span>
-                <span class="text-2xl font-bold text-[#2d4499]">
-                    Rp {{ number_format($periksa->biaya_periksa, 0, ',', '.') }}
-                </span>
+            <div class="card-body px-6 py-5">
+                <h3 class="font-bold text-slate-800 mb-4">Rincian Biaya</h3>
+
+                <div class="space-y-3 text-sm">
+                    <div class="flex items-center justify-between text-slate-600">
+                        <span>Total Obat</span>
+                        <span class="font-semibold">Rp {{ number_format($subtotalObat, 0, ',', '.') }}</span>
+                    </div>
+
+                    <div class="flex items-center justify-between text-slate-600">
+                        <span>Biaya Pemeriksaan</span>
+                        <span class="font-semibold">Rp {{ number_format($biayaPemeriksaan, 0, ',', '.') }}</span>
+                    </div>
+
+                    <div class="border-t pt-3 flex items-center justify-between">
+                        <span class="font-bold text-slate-700">Total Biaya Periksa</span>
+                        <span class="text-2xl font-bold text-[#2d4499]">
+                            Rp {{ number_format($periksa->biaya_periksa, 0, ',', '.') }}
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
 
