@@ -38,7 +38,7 @@
                         @endforeach
                     </select>
                     <label class="label pt-1">
-                        <span class="text-xs text-slate-500">Obat dengan stok 0 tidak bisa dipilih. Stok ≤ 5 ditandai menipis.</span>
+                        <span class="text-xs text-slate-500">Obat dengan stok 0 tidak bisa dipilih.</span>
                     </label>
                 </div>
 
