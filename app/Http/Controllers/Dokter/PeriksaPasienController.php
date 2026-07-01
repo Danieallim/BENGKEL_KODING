@@ -42,10 +42,6 @@ class PeriksaPasienController extends Controller
         ]);
 
         $obatIds = json_decode($request->obat_json, true);
-
-        // if(!is_array($obatIds) || count($obatIds) === 0){
-        //     return back()->with('error', 'Obat wajib diisi bos')->withInput();
-
         $obatCounts = array_count_values($obatIds);
         $obats = Obat::whereIn('id', array_keys($obatCounts))->get()->keyBy('id');
 
